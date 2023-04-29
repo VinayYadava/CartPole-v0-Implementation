@@ -1,4 +1,4 @@
-# CartPole-v0 Implementation \
+# CartPole-v0 Implementation 
 This project contains three Python files - train.py, test.py, and evaluation.py - and a package called project with an __init__.py file. The train.py script is used to train our model, the test.py script is used to test our trained model, and the evaluation.py script is used to evaluate the performance of our model on the CartPole-v0 environment.
 
 ## Installation \
