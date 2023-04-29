@@ -1,0 +1,73 @@
+write a README.md file for a project containing files with content
+train.py -> "from project import *
+
+"""  this script is there is to train our model   """
+
+log_path = os.path.join("Training","logs")
+PPO_Path=os.path.join("Training","Saved Models",'PPO_Model_Cartpole')
+print(log_path)
+
+env = gym.make(
+    env_name
+    )
+
+env = DummyVecEnv(
+    [
+        lambda:env
+    ]
+)
+
+model = PPO(
+    policy='MlpPolicy',
+    env = env,
+    verbose=1,
+    tensorboard_log=log_path
+)
+
+model.learn(total_timesteps=20000)
+
+model.save(PPO_Path)
+env.close()
+"
+
+test.py -> "from project import *
+
+"""  this script is there is to test our model   """
+
+model = PPO.load(PPO_Path,env = env)
+
+for episode in range(episodes):
+    obs=env.reset()
+    done=False
+    score=0
+    while not done:
+        env.render()
+        act,_ = model.predict(obs)
+        obs,reward,done,info=env.step(act)
+        score+=reward
+    print("episode:{}   score:{}".format(episode,score))
+    "
+
+evaluation.py -> "from project import *
+
+"""  this script is there is to evaluate our model   """
+model = PPO.load(PPO_Path,env = env)
+tup = evaluate_policy(model,env,n_eval_episodes=10,render = True)
+print(tup)
+env.close()
+"
+
+and a package project with __init__.py -> "from stable_baselines3 import PPO
+from stable_baselines3.common.vec_env import DummyVecEnv
+from stable_baselines3.common.evaluation import evaluate_policy
+import gym
+import os
+
+
+env_name = "CartPole-v0"
+env = gym.make(env_name)
+episodes = 10
+
+log_path = os.path.join("Training","logs")
+PPO_Path=os.path.join("Training","Saved Models",'PPO_Model_Cartpole')
+"
